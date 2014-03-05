@@ -82,3 +82,17 @@ function Probe_ide_init(prjroot )
 endfunction
 "noremap <unique> <script> <Plug><SID>Add
 
+" 获得项目的根目录
+let s:prjroot=fnamemodify('',':p')
+
+function! MapUnitTest()
+    if filereadable(s:prjroot.'test/unittest.sh')
+        exec '!sudo sh '. s:prjroot .'test/unittest.sh'
+    endif
+endfunction
+
+"若项目根目录下_prj/in.vim文件存在，则定义F2映射和加载Pylon插件
+if filereadable(s:prjroot.'_prj/in.vim')
+    noremap <F2> <Esc> :call MapUnitTest() <CR>
+    call Probe_ide_init(strpart(s:prjroot, 0, strlen(s:prjroot)-1 ))
+endif
