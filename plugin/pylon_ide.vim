@@ -96,3 +96,7 @@ if filereadable(s:prjroot.'_prj/in.vim')
     noremap <F2> <Esc> :call MapUnitTest() <CR>
     call Probe_ide_init(strpart(s:prjroot, 0, strlen(s:prjroot)-1 ))
 endif
+
+function! PhpBeautify()
+  exec '% ! php_beautifier --filters "Pear() NewLines(before=public:class:private) ArrayNested() IndentStyles(style=k&r)"'
+endfunction
