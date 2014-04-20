@@ -4,21 +4,31 @@ endif
 let pylon_ide_loaded = 1
 
 function Pylon_build_index()
-    execute  '! ' . g:pylon_prjroot. '/_prj/srcindex.sh ' 
-    execute  "cs kill -1 "
-    execute  "cs add " . g:pylon_prjroot. '/_prj/cscope.out  '
+    silent execute "! echo -e ---- Building cscope ----\n"
+    silent execute  '! ' . g:pylon_prjroot. '/_prj/srcindex.sh ' 
+    silent execute  "cs kill -1 "
+    silent execute  "cs add " . g:pylon_prjroot. '/_prj/cscope.out  '
+    if executable('phpctags')
+        " silent execute "! echo -e ---- Building phpctags, please wait ... ----"
+        " silent execute "! phpctags -R -f tmp/tags --languages=php --fields=+iaS --extra=+q ."
+        " silent execute "! echo -e ---- Building ctags ----\n"
+        " silent execute "! ctags -R --append=yes -f tmp/tags --languages=+all,-php --fields=+iaS --extra=+q ."
+    elseif
+        " silent execute "! echo -e ---- Building ctags ----\n"
+        "silent execute "! ctags -R -f tmp/tags --languages=+all --fields=+iaS --extra=+q ."
+    endif
+    " silent execute "set tags=tmp/tags,".&tags
+    execute "! echo -e ---- Finished ----"
 endfunction
 
 function Pylon_prj_cmd(cmd)
     execute  '! ' . g:pylon_prjroot. '/_prj/' . a:cmd 
 endfunction
 
-
-
 function Pylon_debug_watch(varname,type)
     let n= line('.')  
     let pos = indent('.')
-    let watchstr = repeat(" ",pos) .  printf("Debug::watch(__FILE__,__LINE__,%s,'%s');",a:varname,a:varname)
+    let watchstr = repeat(" ",pos) .   printf("Debug::watch(__FILE__,__LINE__,%s,'%s');",a:varname,a:varname)
     if a:type == "up" 
         let    n = n-1
     endif
@@ -97,6 +107,3 @@ if filereadable(s:prjroot.'_prj/in.vim')
     call Probe_ide_init(strpart(s:prjroot, 0, strlen(s:prjroot)-1 ))
 endif
 
-function! PhpBeautify()
-  exec '% ! php_beautifier --filters "Pear() NewLines(before=public:class:private) ArrayNested() IndentStyles(style=k&r)"'
-endfunction

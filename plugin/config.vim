@@ -15,11 +15,23 @@ func! FileTypeToggle()
   endif
 endf
 
-" au BufReadPost *
-"      \ if line("'\"") > 1 && line("'\"") <= line("$") |
-"     \   exe "normal! g`\"" |
-"     \ endif
-
+"   au BufReadPost *
+"        \ if line("'\"") > 1 && line("'\"") <= line("$") |
+"       \   exe "normal! g`\"" |
+"       \ endif
+" 
+"  function! ResCur()
+"      if line("'\"") <= line("$")
+"          normal! g`"
+"          return 1
+"      endif
+"  endfunction
+" 
+"  augroup resCur
+"      autocmd!
+"      autocmd BufWinEnter * call ResCur()
+"  augroup END
+" 
 
 "Go to last file(s) if invoked without arguments.
 autocmd VimLeave * NERDTreeClose
@@ -66,14 +78,16 @@ func! SaveSession(name)
     end
 endf
 
-if ! exists("g:vj_open_last_file_mode")
-    set ssop-=options
-    set ssop-=curdir
-    set ssop-=tabpages
-    set ssop-=blank
-    set ssop-=buffers 
+ if ! exists("g:vj_open_last_file_mode")
+     set ssop+=resize
+     set ssop+=winpos
+     set ssop-=options
+     set ssop-=curdir
+     set ssop-=tabpages
+     set ssop-=blank
+     set ssop-=buffers 
     let g:vj_open_last_file_mode=1
-endif
+ endif
 
 if ! exists("g:vj_source_from_code_mode")
     let g:vj_source_from_code_mode=0
@@ -94,3 +108,7 @@ func! VjOpen()
         NERDTreeFind
     endif
 endf
+
+function! PhpBeautify()
+    exec '% ! php_beautifier --filters "Pear() NewLines(before=public:class:private) ArrayNested() IndentStyles(style=k&r)"'
+endfunction
