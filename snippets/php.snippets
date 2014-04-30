@@ -1,0 +1,15 @@
+snippet plr
+	$${1:var} = $request->${2:$1};${3}
+snippet plx
+	$xcontext->${2:$1} = $${1:var};${3}
+snippet plca
+	class Action_${1:action} extends XAction
+	{
+		public function _run($request,$xcontext)
+		{
+			${2}
+
+			return XNext::nothing();
+		}
+	}
+

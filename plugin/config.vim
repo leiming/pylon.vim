@@ -4,34 +4,17 @@ endif
 
 let g:pylon_ide_config = 1
 
-func! FileTypeToggle()
-  let a:ft=&filetype
-  if a:ft == 'php'
-    set ft=html
-    echo 'set filetype=html'
-  elseif a:ft == 'html'
-    set ft=php
-    echo 'set filetype=php'
-  endif
-endf
+let g:vjFileTypeList = ['php','javascript','html']
 
-"   au BufReadPost *
-"        \ if line("'\"") > 1 && line("'\"") <= line("$") |
-"       \   exe "normal! g`\"" |
-"       \ endif
-" 
-"  function! ResCur()
-"      if line("'\"") <= line("$")
-"          normal! g`"
-"          return 1
-"      endif
-"  endfunction
-" 
-"  augroup resCur
-"      autocmd!
-"      autocmd BufWinEnter * call ResCur()
-"  augroup END
-" 
+func! VjFileTypeToggle()
+    let a:curFt = &filetype
+    let a:ftIndex = index(g:vjFileTypeList, a:curFt)  
+    if a:ftIndex  != -1
+        let a:nextFt=g:vjFileTypeList[( (a:ftIndex + 1) % len(g:vjFileTypeList) )]
+        exec "set ft=".a:nextFt
+        echo ':set filetype ='a:nextFt
+    endif
+endfunction
 
 "Go to last file(s) if invoked without arguments.
 autocmd VimLeave * NERDTreeClose
@@ -79,8 +62,9 @@ func! SaveSession(name)
 endf
 
  if ! exists("g:vj_open_last_file_mode")
-     set ssop+=resize
-     set ssop+=winpos
+     " set ssop+=resize
+     " set ssop+=winpos
+     set ssop-=winpos
      set ssop-=options
      set ssop-=curdir
      set ssop-=tabpages
@@ -109,6 +93,25 @@ func! VjOpen()
     endif
 endf
 
-function! PhpBeautify()
+function! VjMaximizeToggle()
+    if exists("s:maximize_session")
+        exec "source " . s:maximize_session
+        call delete(s:maximize_session)
+        unlet s:maximize_session
+        let &hidden=s:maximize_hidden_save
+        unlet s:maximize_hidden_save
+    else
+        let s:maximize_hidden_save = &hidden
+        let s:maximize_session = tempname()
+        set hidden
+        exec "mksession! " . s:maximize_session
+        only
+    endif
+endfunction
+
+command! -nargs=0 VJMaximizeToggle call VjMaximizeToggle()
+command! -nargs=0 VJFileTypeToggle call VjFileTypeToggle()
+
+function! VjPhpBeautify()
     exec '% ! php_beautifier --filters "Pear() NewLines(before=public:class:private) ArrayNested() IndentStyles(style=k&r)"'
 endfunction
