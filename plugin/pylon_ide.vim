@@ -97,7 +97,9 @@ let s:prjroot=fnamemodify('',':p')
 
 function! MapUnitTest()
     if filereadable(s:prjroot.'test/unittest.sh')
-        exec '!sudo sh '. s:prjroot .'test/unittest.sh'
+        exec '!'. s:prjroot .'test/unittest.sh'
+    else
+        exec '! /home/q/tools/pylon_rigger/rigger start -s test'
     endif
 endfunction
 
