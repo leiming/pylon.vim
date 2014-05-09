@@ -72,15 +72,15 @@ function Pylon_ide_init(prjroot )
     noremap \rue <Esc>:call Pylon_dbc_add(expand("<cword>"),"unExpect")<CR> 
     noremap \rui <Esc>:call Pylon_dbc_add("__FUNCTION__"),"unImplement")<CR> 
 
-    ia s1   echo "---------------step 1 ---------------<br>\n";
-    ia s2   echo "---------------step 2 ---------------<br>\n";
-    ia s3   echo "---------------step 3 ---------------<br>\n";
-    ia s4   echo "---------------step 4 ---------------<br>\n";
-    ia s5   echo "---------------step 5 ---------------<br>\n";
-    ia s6   echo "---------------step 6 ---------------<br>\n";
-    ia s7   echo "---------------step 7 ---------------<br>\n";
-    ia s8   echo "---------------step 8 ---------------<br>\n";
-    ia s9   echo "---------------step 9 ---------------<br>\n";
+    " ia s1   echo "---------------step 1 ---------------<br>\n";
+    " ia s2   echo "---------------step 2 ---------------<br>\n";
+    " ia s3   echo "---------------step 3 ---------------<br>\n";
+    " ia s4   echo "---------------step 4 ---------------<br>\n";
+    " ia s5   echo "---------------step 5 ---------------<br>\n";
+    " ia s6   echo "---------------step 6 ---------------<br>\n";
+    " ia s7   echo "---------------step 7 ---------------<br>\n";
+    " ia s8   echo "---------------step 8 ---------------<br>\n";
+    " ia s9   echo "---------------step 9 ---------------<br>\n";
 
     :command! -nargs=1 Ap :cs find  s do_<args>
     :command! -nargs=1 Af :cs find  t -><args>
