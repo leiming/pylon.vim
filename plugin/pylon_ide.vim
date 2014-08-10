@@ -82,20 +82,6 @@ function Pylon_ide_init(prjroot )
     " ia s8   echo "---------------step 8 ---------------<br>\n";
     " ia s9   echo "---------------step 9 ---------------<br>\n";
 
-    :command! -nargs=1 Ap :cs find  s do_<args>
-    :command! -nargs=1 Af :cs find  t -><args>
-   
-    nmap <leader>ss :cs find s <C-R>=expand("<cword>")<CR><CR>
-    nmap <leader>st :cs find t <C-R>=expand("<cword>")<CR><CR>
-
-    :command! -nargs=1 Cs :cs find  s <args>
-    :command! -nargs=1 Ct :cs find  t <args>
-    :command! -nargs=1 Cg :cs find  g <args>
-    :command! -nargs=1 Cd :cs find  d <args>
-    :command! -nargs=1 Ce :cs find  e <args>
-    :command! -nargs=1 Cf :cs find  f <args>
-    :command! -nargs=1 Ci :cs find  i <args>
-
 endfunction
 
 function Probe_ide_init(prjroot )
