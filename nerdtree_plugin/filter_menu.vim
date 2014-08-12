@@ -5,7 +5,7 @@ let g:loaded_nerdtree_filter_menu = 1
 
 
 call NERDTreeAddMenuItem({
-            \'text': '(f)TaoGuo, filter file''s extension', 
+            \'text': '(f)Filter file''s extension', 
             \'shortcut': 'f', 
             \'callback': 'NERDTreeFilterExtension'})
 

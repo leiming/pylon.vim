@@ -3,23 +3,15 @@ if exists("pylon_ide_loaded")
 endif
 let pylon_ide_loaded = 1
 
-function Pylon_build_index()
-    silent execute "! echo -e ---- Building cscope ----\n"
-    silent execute  '! ' . g:pylon_prjroot. '/_prj/srcindex.sh ' 
-    silent execute  "cs kill -1 "
-    silent execute  "cs add " . g:pylon_prjroot. '/_prj/cscope.out  '
-    if executable('phpctags')
-        " silent execute "! echo -e ---- Building phpctags, please wait ... ----"
-        " silent execute "! phpctags -R -f tmp/tags --languages=php --fields=+iaS --extra=+q ."
-        " silent execute "! echo -e ---- Building ctags ----\n"
-        " silent execute "! ctags -R --append=yes -f tmp/tags --languages=+all,-php --fields=+iaS --extra=+q ."
-    elseif
-        " silent execute "! echo -e ---- Building ctags ----\n"
-        "silent execute "! ctags -R -f tmp/tags --languages=+all --fields=+iaS --extra=+q ."
-    endif
-    " silent execute "set tags=tmp/tags,".&tags
-    execute "! echo -e ---- Finished ----"
-endfunction
+" 获得项目的根目录
+let s:prjroot=fnamemodify('',':p')
+
+"  生成ctags cscope
+func! GeneratorIndex()
+    silent execute  '! ~/.vim/team_bundle/pylon_ide/generator_index.sh ' . s:prjroot 
+    execute "! echo -e --- Finished ---\n"
+endf
+
 
 function Pylon_prj_cmd(cmd)
     execute  '! ' . g:pylon_prjroot. '/_prj/' . a:cmd 
@@ -56,7 +48,7 @@ let g:pylon_prj_ci  = "ci.sh"
 
 function Pylon_ide_init(prjroot )
     let g:pylon_prjroot = a:prjroot 
-    noremap <F9> <Esc>: call Pylon_build_index() <CR>
+    " noremap <F9> <Esc>: call Pylon_build_index() <CR>
     noremap <F8> <Esc>: call Pylon_prj_cmd(g:pylon_prj_init) <CR>
     noremap <F7> <Esc>: call Pylon_prj_cmd("build_index.sh") <CR>
     map \zci <Esc>:call Pylon_prj_cmd(g:pylon_prj_ci) <CR>
@@ -89,8 +81,6 @@ function Probe_ide_init(prjroot )
 endfunction
 "noremap <unique> <script> <Plug><SID>Add
 
-" 获得项目的根目录
-let s:prjroot=fnamemodify('',':p')
 
 function! MapUnitTest()
     if filereadable(s:prjroot.'test/unittest.sh')
@@ -99,6 +89,8 @@ function! MapUnitTest()
         exec '! /home/q/tools/pylon_rigger/rigger start -s test'
     endif
 endfunction
+
+noremap <F9> <Esc> :call GeneratorIndex() <CR>
 
 "若项目根目录下_prj/in.vim文件存在，则定义F2映射和加载Pylon插件
 if filereadable(s:prjroot.'_prj/in.vim')

@@ -113,6 +113,7 @@ command! -nargs=0 VJMaximizeToggle call VjMaximizeToggle()
 command! -nargs=0 VJFileTypeToggle call VjFileTypeToggle()
 
 function! VjPhpBeautify()
-    " exec '% ! php_beautifier --filters "Pear() NewLines(before=public:class:private) ArrayNested() IndentStyles(style=k&r)"'
-    exec '% ! php_beautifier --filters "Pear() ArrayNested() IndentStyles(style=k&r)"'
+    exec '% ! php_beautifier --filters "Pear() ListClassFunction() NewLines(before=T_COMMENT:T_CLASS:if,after=T_COMMENT) ArrayNested()"'
+    " exec '% ! php_beautifier --filters "Pear() NewLines(before=T_CLASS:function:T_COMMENT,after=T_COMMENT) EqualsAlign() ArrayNested()"'
+    " exec '% ! php_beautifier --filters "Pear() ArrayNested() IndentStyles(style=k&r)"'
 endfunction
