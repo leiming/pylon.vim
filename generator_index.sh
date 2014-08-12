@@ -26,16 +26,19 @@ if [[ -r "$1"  ]]; then
     # find . -name '*.h'    >> $csfile
     # find . -name '*.cpp'  >> $csfile
 
-    # 捕获 pylon 框架源码
+    # 捕获 pylon 框架源码路径，取yaml 文件中第一次匹配 PYLON 的行的 value 值，并去掉引号
     if [[ -r "$1/_rg/svc.yaml" ]]; then
-        pylon_src=`sed '/PYLON/!d' $1/_rg/svc.yaml | awk '{print $NF}' | tr -d '"'`
-        if [[ -r $pylon_src ]]; then
-            echo -e "--- generate pylon_tags ---\n"
-            cd $pylon_src
-            ctags -R --tag-relative  --fields=+aimS --languages=php -f $1/_prj/pylon_tags
-            cd $1
-            find $pylon_src/ -name '*.php'  >> $csfile
-        fi
+        pylon_src=`awk 'BEGIN{count=0} /PYLON/{ if(count==0){print $NF;} count++}' _rg/svc.yaml | tr -d '"'`
+    elif [[ -r "$1/_rg/res.yaml" ]]; then
+        pylon_src=`awk 'BEGIN{count=0} /PYLON/{ if(count==0){print $NF;} count++}' _rg/res.yaml | tr -d '"'`
+    fi
+
+    if [[ -r $pylon_src ]]; then
+        echo -e "--- generate pylon_tags ---\n"
+        cd $pylon_src
+        ctags -R --tag-relative  --fields=+aimS --languages=php -f $1/_prj/pylon_tags
+        cd $1
+        find $pylon_src/ -name '*.php'  >> $csfile
     fi
 
     # 调用 cscope.files 文件生成 cscope.out
