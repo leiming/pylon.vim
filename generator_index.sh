@@ -36,7 +36,8 @@ if [[ -r "$1"  ]]; then
     if [[ -r $pylon_src ]]; then
         echo -e "--- generate pylon_tags ---\n"
         cd $pylon_src
-        ctags -R --tag-relative  --fields=+aimS --languages=php -f $1/_prj/pylon_tags
+        ctags -R --tag-relative  --fields=+aimS --languages=php -f $1/pylon_tags
+        cp $1/pylon_tags $1/_prj/pylon_tags
         cd $1
         find $pylon_src/ -name '*.php'  >> $csfile
     fi
