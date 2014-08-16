@@ -50,7 +50,7 @@ function Pylon_ide_init(prjroot )
     let g:pylon_prjroot = a:prjroot 
     " noremap <F9> <Esc>: call Pylon_build_index() <CR>
     noremap <F8> <Esc>: call Pylon_prj_cmd(g:pylon_prj_init) <CR>
-    noremap <F7> <Esc>: call Pylon_prj_cmd("build_index.sh") <CR>
+    " noremap <F7> <Esc>: call Pylon_prj_cmd("build_index.sh") <CR>
     map \zci <Esc>:call Pylon_prj_cmd(g:pylon_prj_ci) <CR>
 
     noremap \dw <Esc>:call Pylon_debug_watch(expand("<cword>"),"down")<CR> 
