@@ -9,12 +9,13 @@ if [[ -r "$1"  ]]; then
     echo -e "\n--- generate tags ---\n"
     
     if [[ -r "_prj" ]]; then
-        ctags -R --fields=+aimS --languages=php -f _prj/tags 
+        ctags -R --tag-relative --fields=+aimS -f _prj/tags 
     else
         ctags -R --fields=+aimS --languages=php 
     fi
     
     find . -name '*.php'  > $csfile
+    find . -name '*.py'  > $csfile
     find . -name '*.html' >> $csfile
     find . -name '*.sh'   >> $csfile
     find . -name '*.conf' >> $csfile
