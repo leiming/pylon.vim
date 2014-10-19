@@ -6,10 +6,24 @@ let pylon_ide_loaded = 1
 " 获得项目的根目录
 let s:prjroot=fnamemodify('',':p')
 
-"  生成ctags cscope
 func! GeneratorIndex()
     silent execute  '! ~/.vim/team_bundle/pylon_ide/generator_index.sh ' . s:prjroot 
     execute "! echo -e --- Finished ---\n"
+    :call UpdatePrjTags()
+endf
+
+func! UpdatePrjTags()
+    " 将 _prj/ 下 tags 结尾的文件
+    let a:tag_list=split(globpath(s:prjroot."_prj/", '*tags'), "\n")
+    set tags=
+    let i=0
+    while i<len(a:tag_list)
+        if filereadable(a:tag_list[i])
+            " echo a:tag_list[i]
+            execute "set tags+=".a:tag_list[i]            
+        endif
+        let i+=1
+    endwhile
 endf
 
 
