@@ -26,7 +26,6 @@ func! UpdatePrjTags()
     endwhile
 endf
 
-
 function Pylon_prj_cmd(cmd)
     execute  '! ' . g:pylon_prjroot. '/_prj/' . a:cmd 
 endfunction
@@ -96,7 +95,7 @@ endfunction
 "noremap <unique> <script> <Plug><SID>Add
 
 
-function! MapUnitTest()
+function MapUnitTest()
     if filereadable(s:prjroot.'test/unittest.sh')
         exec '!'. s:prjroot .'test/unittest.sh'
     else
@@ -106,9 +105,12 @@ endfunction
 
 noremap <F9> <Esc> :call GeneratorIndex() <CR>
 
-"若项目根目录下_prj/in.vim文件存在，则定义F2映射和加载Pylon插件
-if filereadable(s:prjroot.'_prj/in.vim')
+"若项目根目录下_prj/init.sh文件存在，则定义F2映射和加载Pylon插件
+if filereadable(s:prjroot.'_prj/init.sh')
     noremap <F2> <Esc> :call MapUnitTest() <CR>
     call Probe_ide_init(strpart(s:prjroot, 0, strlen(s:prjroot)-1 ))
 endif
 
+if filereadable(s:prjroot.'_prj/_prj.vim')
+    exec 'source '.s:prjroot.'_prj/_prj.vim'
+endif
