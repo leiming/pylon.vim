@@ -1,6 +1,6 @@
 if exists('g:pylon_ide_config')
-  finish
-endif 
+    finish
+endif
 
 let g:pylon_ide_config = 1
 
@@ -8,7 +8,7 @@ let g:vjFileTypeList = ['php','javascript','html']
 
 func! VjFileTypeToggle()
     let a:curFt = &filetype
-    let a:ftIndex = index(g:vjFileTypeList, a:curFt)  
+    let a:ftIndex = index(g:vjFileTypeList, a:curFt)
     if a:ftIndex  != -1
         let a:nextFt=g:vjFileTypeList[( (a:ftIndex + 1) % len(g:vjFileTypeList) )]
         exec "set ft=".a:nextFt
@@ -25,25 +25,25 @@ autocmd VimLeave * nested call VjClose()
 " 实验性特性
 " 若离开前窗口不是NERDTree 且只有两个窗口 且 NerdTree是打开状态，则保存session
 func! VjBufClose()
-    if ! exists("b:NERDTreeType") && winnr("$") == 2 
+    if ! exists("b:NERDTreeType") && winnr("$") == 2
         if exists("t:NERDTreeBufName") && bufwinnr(t:NERDTreeBufName) != -1
             call SaveSession(FindProjectName())
-        endif 
-    endif 
+        endif
+    endif
 endf
 
 if ! isdirectory('~/.vim/sessions/')
-   silent exec '!mkdir -p ~/.vim/sessions'
+    silent exec '!mkdir -p ~/.vim/sessions'
 endif
 
 func! FindProjectName()
     let s:name = getcwd()
     if !isdirectory(".git")
         let s:name = substitute(finddir(".git", ".;"), "/.git", "", "")
-    endif 
+    endif
     if s:name != ""
         let s:name = matchstr(s:name, ".*", strridx(s:name, "/") + 1)
-    endif 
+    endif
     return s:name
 endf
 
@@ -61,24 +61,24 @@ func! SaveSession(name)
     end
 endf
 
- if ! exists("g:vj_open_last_file_mode")
-     " set ssop+=resize
-     " set ssop+=winpos
-     set ssop-=winpos
-     set ssop-=options
-     set ssop-=curdir
-     set ssop-=tabpages
-     set ssop-=blank
-     set ssop-=buffers 
+if ! exists("g:vj_open_last_file_mode")
+    " set ssop+=resize
+    " set ssop+=winpos
+    set ssop-=winpos
+    set ssop-=options
+    set ssop-=curdir
+    set ssop-=tabpages
+    set ssop-=blank
+    set ssop-=buffers
     let g:vj_open_last_file_mode=1
- endif
+endif
 
 if ! exists("g:vj_source_from_code_mode")
     let g:vj_source_from_code_mode=0
 endif
 
 func! VjClose()
-    call SaveSession(FindProjectName()) 
+    call SaveSession(FindProjectName())
 endf
 
 func! VjOpen()
@@ -114,6 +114,4 @@ command! -nargs=0 VJFileTypeToggle call VjFileTypeToggle()
 
 function! VjPhpBeautify()
     exec '% ! php_beautifier --filters "Pear() ListClassFunction() NewLines(before=T_COMMENT:T_CLASS:if,after=T_COMMENT) ArrayNested()"'
-    " exec '% ! php_beautifier --filters "Pear() NewLines(before=T_CLASS:function:T_COMMENT,after=T_COMMENT) EqualsAlign() ArrayNested()"'
-    " exec '% ! php_beautifier --filters "Pear() ArrayNested() IndentStyles(style=k&r)"'
 endfunction
