@@ -82,9 +82,9 @@ func! VjClose()
 endf
 
 func! VjOpen()
-    let a:session_name = FindProjectName()
-    if g:vj_open_last_file_mode != 0 && a:session_name != ''
-        call RestoreSession(a:session_name)
+    let s:sessionName = FindProjectName()
+    if g:vj_open_last_file_mode != 0 && s:sessionName != ''
+        call RestoreSession(s:sessionName)
     endif
     if g:vj_source_from_code_mode == 0
         NERDTreeTabsToggle
